@@ -16,7 +16,7 @@
 
 task downloadModel(type: Download) {
     src 'https://storage.googleapis.com/mediapipe-models/language_detector/language_detector/float32/1/language_detector.tflite'
-    dest project.ext.ASSET_DIR + '/detection_model.tflite'
+    dest project.ext.ASSET_DIR + '/detection_model_ar.tflite'
     overwrite false
 }
 
