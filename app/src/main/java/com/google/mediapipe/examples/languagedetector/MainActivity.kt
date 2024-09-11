@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener{
             runOnUiThread {
                 activityMainBinding.bottomSheetLayout.inferenceTimeVal.text =
                     String.format("%d ms", inferenceTime)
-                speakOut(getArabicLanguageName(results.languagesAndScores()[0].languageCode()));
+                speakOut(results.languagesAndScores()[0].languageCode());
                 adapter.updateResult(results
                     .languagesAndScores().sortedByDescending {
                         it.probability()
@@ -115,17 +115,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener{
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "The Language not supported!")
             }
-        }
-    }
-    private fun getArabicLanguageName(languageCode: String): String {
-        return when (languageCode) {
-            "en" -> "اللغة الإنجليزية"  // English
-            "fr" -> "اللغة الفرنسية"    // French
-            "es" -> "اللغة الإسبانية"    // Spanish
-            "de" -> "اللغة الألمانية"    // German
-            "ar" -> "اللغة العربية"      // Arabic
-            "it" -> "اللغة الإيطالية"    // Italian
-            else -> "لغة غير معروفة"    // Unknown language
         }
     }
 }
