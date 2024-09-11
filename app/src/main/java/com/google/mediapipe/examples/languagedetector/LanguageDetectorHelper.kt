@@ -81,6 +81,6 @@ class LanguageDetectorHelper(
     companion object {
         const val TAG = "LanguageDetectorHelper"
 
-        const val MODEL_DETECTOR = "detection_model.tflite"
+        const val MODEL_DETECTOR = "detection_model_ar.tflite"
     }
 }
