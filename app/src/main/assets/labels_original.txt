@@ -1,7 +1,7 @@
-لغة غير معروفة
+unknown
 af
 am
-اللغة العربية
+ar
 ar-Latn
 az
 be
@@ -15,10 +15,10 @@ co
 cs
 cy
 da
-اللغة الألمانية
+de
 el
 el-Latn
-اللغة الإنجليزية
+en
 eo
 es
 et
