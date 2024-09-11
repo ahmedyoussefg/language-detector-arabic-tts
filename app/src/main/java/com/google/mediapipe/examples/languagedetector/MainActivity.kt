@@ -17,16 +17,21 @@ package com.google.mediapipe.examples.languagedetector
 
 import android.os.Build
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.mediapipe.examples.languagedetector.databinding.ActivityMainBinding
 import com.google.mediapipe.tasks.text.languagedetector.LanguageDetectorResult
+import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener{
 
     private var _activityMainBinding: ActivityMainBinding? = null
     private val activityMainBinding get() = _activityMainBinding!!
+    private var tts: TextToSpeech? = null
+
     private lateinit var helper: LanguageDetectorHelper
     private val adapter by lazy {
         ResultsAdapter()
@@ -41,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 activityMainBinding.bottomSheetLayout.inferenceTimeVal.text =
                     String.format("%d ms", inferenceTime)
-
+                speakOut(getArabicLanguageName(results.languagesAndScores()[0].languageCode()));
                 adapter.updateResult(results
                     .languagesAndScores().sortedByDescending {
                         it.probability()
@@ -65,6 +70,8 @@ class MainActivity : AppCompatActivity() {
             context = this@MainActivity,
             listener = listener
         )
+        // TextToSpeech(Context: this, OnInitListener: this)
+        tts = TextToSpeech(this, this)
 
         // Classify the text in the TextEdit box (or the default if nothing is added)
         // on button click.
@@ -78,8 +85,12 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding.results.adapter = adapter
         initBottomSheetControls()
+
     }
 
+    private fun speakOut(text: String) {
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null,"")
+    }
     private fun initBottomSheetControls() {
         val behavior =
             BottomSheetBehavior.from(activityMainBinding.bottomSheetLayout.bottomSheetLayout)
@@ -94,6 +105,27 @@ class MainActivity : AppCompatActivity() {
             finishAfterTransition()
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts!!.setLanguage(Locale.forLanguageTag("ar"))
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "The Language not supported!")
+            }
+        }
+    }
+    private fun getArabicLanguageName(languageCode: String): String {
+        return when (languageCode) {
+            "en" -> "اللغة الإنجليزية"  // English
+            "fr" -> "اللغة الفرنسية"    // French
+            "es" -> "اللغة الإسبانية"    // Spanish
+            "de" -> "اللغة الألمانية"    // German
+            "ar" -> "اللغة العربية"      // Arabic
+            "it" -> "اللغة الإيطالية"    // Italian
+            else -> "لغة غير معروفة"    // Unknown language
         }
     }
 }
