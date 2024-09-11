@@ -46,7 +46,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener{
             runOnUiThread {
                 activityMainBinding.bottomSheetLayout.inferenceTimeVal.text =
                     String.format("%d ms", inferenceTime)
-                speakOut(results.languagesAndScores()[0].languageCode());
+                var res_languages=results.languagesAndScores()
+                var detected_language: String
+                if (res_languages.size==0) {
+                    detected_language="لغة غير معروفة"
+                }
+                else {
+                    detected_language=res_languages[0].languageCode()
+                }
+                speakOut(detected_language)
                 adapter.updateResult(results
                     .languagesAndScores().sortedByDescending {
                         it.probability()
