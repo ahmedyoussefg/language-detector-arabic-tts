@@ -43,3 +43,9 @@ explicitly.
 
 Downloading, extraction, and placing the models into the assets folder is
 managed automatically by the download_model.gradle file.
+
+### Sample Run
+
+
+https://github.com/user-attachments/assets/9f5671c0-a589-4e2d-8e7a-384e21f29648
+
